@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
 
     @IBOutlet weak var tableView: UITableView!
-    var categories: [NSManagedObject] = []
+    var categories: [MyCategory] = []
 
 
     override func viewDidLoad() {
@@ -34,12 +34,13 @@ class ViewController: UIViewController {
         let managedContext = appDelegate.persistentContainer.viewContext
         
         //get a reference to the entity
+        //let fetchRequest = NSFetchRequest<NSManagedObject>
         let fetchRequest =
             NSFetchRequest<NSManagedObject>(entityName: "MyCategory")
         
         //do, try, catch
         do {
-            categories = try managedContext.fetch(fetchRequest)
+            categories = try managedContext.fetch(fetchRequest) as! [MyCategory]
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -99,7 +100,7 @@ class ViewController: UIViewController {
         // 4
         do {
             try managedContext.save()
-            categories.append(person)
+            categories.append(person as! MyCategory)
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
