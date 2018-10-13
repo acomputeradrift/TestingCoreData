@@ -13,12 +13,12 @@ class ViewController: UIViewController {
 
 
     @IBOutlet weak var tableView: UITableView!
-    var categories: [MyCategory] = []
+    var categories: [Category] = []
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "The List"
+        title = "Categories"
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
     }
@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         
         //do, try, catch
         do {
-            categories = try managedContext.fetch(fetchRequest) as! [MyCategory]
+            categories = try managedContext.fetch(fetchRequest) as! [Category]
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -100,7 +100,7 @@ class ViewController: UIViewController {
         // 4
         do {
             try managedContext.save()
-            categories.append(person as! MyCategory)
+            categories.append(person as! Category)
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }

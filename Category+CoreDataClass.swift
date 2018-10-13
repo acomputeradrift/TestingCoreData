@@ -1,5 +1,5 @@
 //
-//  MyCategory+CoreDataClass.swift
+//  Category+CoreDataClass.swift
 //  TestingCoreData
 //
 //  Created by Jamie on 2018-10-13.
@@ -10,7 +10,7 @@
 import Foundation
 import CoreData
 
-@objc(MyCategory)
-public class MyCategory: NSManagedObject {
+@objc(Category)
+public class Category: NSManagedObject {
 
 }
