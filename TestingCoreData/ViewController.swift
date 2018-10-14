@@ -36,7 +36,7 @@ class ViewController: UIViewController {
         //get a reference to the entity
         //let fetchRequest = NSFetchRequest<NSManagedObject>
         let fetchRequest =
-            NSFetchRequest<NSManagedObject>(entityName: "MyCategory")
+            NSFetchRequest<NSManagedObject>(entityName: "Category")
         
         //do, try, catch
         do {
@@ -87,20 +87,24 @@ class ViewController: UIViewController {
             appDelegate.persistentContainer.viewContext
         
         // 2
-        let entity =
-            NSEntityDescription.entity(forEntityName: "MyCategory",
-                                       in: managedContext)!
-        
-        let person = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
+//        let entity =
+//            NSEntityDescription.entity(forEntityName: "Category",
+//                                       in: managedContext)!
+//
+//        let category = NSManagedObject(entity: entity,
+//                                     insertInto: managedContext)
         
         // 3
-        person.setValue(name, forKeyPath: "name")
-        
-        // 4
+   
+        let category = Category(context: managedContext)
+        category.name = name
+             //category.setValue(name, forKeyPath: "name")
+        let subCategory = SubCategory(context: managedContext)
+        subCategory.name = "Income"
+    
         do {
             try managedContext.save()
-            categories.append(person as! Category)
+            categories.append(category )
         } catch let error as NSError {
             print("Could not save. \(error), \(error.userInfo)")
         }
