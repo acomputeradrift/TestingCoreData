@@ -2,7 +2,7 @@
 //  SubCategory+CoreDataProperties.swift
 //  TestingCoreData
 //
-//  Created by Jamie on 2018-10-13.
+//  Created by Jamie on 2018-10-15.
 //  Copyright © 2018 Jamie. All rights reserved.
 //
 //
@@ -18,6 +18,6 @@ extension SubCategory {
     }
 
     @NSManaged public var name: String?
-    @NSManaged public var category: Category?
+    @NSManaged public var cat: Category?
 
 }

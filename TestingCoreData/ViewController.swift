@@ -14,10 +14,16 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     var categories: [Category] = []
-
+    private var appDelegate: AppDelegate? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+            self.appDelegate = appDelegate
+        }
+        
+        
         title = "Categories"
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
@@ -26,9 +32,9 @@ class ViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //get a reference to the appDelegate with has info about the CoreData
-        guard let appDelegate =
-            UIApplication.shared.delegate as? AppDelegate else {
-                return
+        guard let appDelegate = self.appDelegate else {
+            assertionFailure("Unable to retrieve app delegate")
+            return
         }
         //get a reference to the context
         let managedContext = appDelegate.persistentContainer.viewContext
@@ -77,31 +83,19 @@ class ViewController: UIViewController {
     
     func save(name: String) {
         
-        guard let appDelegate =
-            UIApplication.shared.delegate as? AppDelegate else {
-                return
+        guard let appDelegate = self.appDelegate else {
+            assertionFailure("Unable to retrieve app delegate")
+            return
         }
-        
-        // 1
         let managedContext =
             appDelegate.persistentContainer.viewContext
-        
-        // 2
-//        let entity =
-//            NSEntityDescription.entity(forEntityName: "Category",
-//                                       in: managedContext)!
-//
-//        let category = NSManagedObject(entity: entity,
-//                                     insertInto: managedContext)
-        
-        // 3
-   
         let category = Category(context: managedContext)
         category.name = name
              //category.setValue(name, forKeyPath: "name")
         let subCategory = SubCategory(context: managedContext)
         subCategory.name = "Income"
-    
+        category.sub = [ subCategory ]
+        
         do {
             try managedContext.save()
             categories.append(category )
