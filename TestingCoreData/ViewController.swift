@@ -18,12 +18,12 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
             self.appDelegate = appDelegate
         }
-        
-        
+
+
         title = "Categories"
         tableView.register(UITableViewCell.self,
                            forCellReuseIdentifier: "Cell")
@@ -38,12 +38,12 @@ class ViewController: UIViewController {
         }
         //get a reference to the context
         let managedContext = appDelegate.persistentContainer.viewContext
-        
+
         //get a reference to the entity
         //let fetchRequest = NSFetchRequest<NSManagedObject>
         let fetchRequest =
             NSFetchRequest<NSManagedObject>(entityName: "Category")
-        
+
         //do, try, catch
         do {
             categories = try managedContext.fetch(fetchRequest) as! [Category]
@@ -51,30 +51,30 @@ class ViewController: UIViewController {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
-    
+
 
 // Implement the addName IBAction
     @IBAction func addName(_ sender: UIBarButtonItem) {
-        
+
         let alert = UIAlertController(title: "New Category",
                                       message: "Add a new category",
                                       preferredStyle: .alert)
-        
+
         let saveAction = UIAlertAction(title: "Save", style: .default) {
             [unowned self] action in
-            
+
             guard let textField = alert.textFields?.first,
                 let nameToSave = textField.text else {
                     return
             }
-            
+
             self.save(name: nameToSave)
             self.tableView.reloadData()
         }
-        
+
         let cancelAction = UIAlertAction(title: "Cancel",
                                          style: .cancel)
-        
+
         alert.addTextField()
         alert.addAction(saveAction)
         alert.addAction(cancelAction)
@@ -82,7 +82,7 @@ class ViewController: UIViewController {
     }
     
     func save(name: String) {
-        
+
         guard let appDelegate = self.appDelegate else {
             assertionFailure("Unable to retrieve app delegate")
             return
@@ -95,7 +95,8 @@ class ViewController: UIViewController {
         let subCategory = SubCategory(context: managedContext)
         subCategory.name = "Income"
         category.sub = [ subCategory ]
-        
+        print(category.sub ?? "Didn't Work")
+
         do {
             try managedContext.save()
             categories.append(category )
@@ -113,11 +114,11 @@ extension ViewController: UITableViewDataSource {
                    numberOfRowsInSection section: Int) -> Int {
         return categories.count
     }
-    
+
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath)
         -> UITableViewCell {
-            
+
             let category = categories[indexPath.row]
             let cell =
                 tableView.dequeueReusableCell(withIdentifier: "Cell",
@@ -136,7 +137,7 @@ extension ViewController: UITableViewDelegate {
                 UIApplication.shared.delegate as? AppDelegate else {
                     return
             }
-            
+
             // 1
             let managedContext = appDelegate.persistentContainer.viewContext
             managedContext.delete(toBeRemoved)
